@@ -17,3 +17,4 @@ Labb OOP 1
 
 ### Ideas: 
 - check if bad weather == more bookings/higher fare
+- 
