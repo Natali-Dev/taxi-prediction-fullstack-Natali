@@ -11,7 +11,7 @@ CLEANED_TAXI_CSV_PATH = files("taxipred").joinpath("data/cleaned_data.csv")
 # DATA_PATH = Path(__file__).parents[1] / "data"
 
 TAXI_MODEL_PATH = files("taxipred").joinpath("models/taxi_XBGRegressor.joblib")
-
+ASSET_PATH = files("taxipred").joinpath("assets/")
 dictionary_for_encoding = [
 {
 "Trip_Distance_km": 1,
