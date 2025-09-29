@@ -30,6 +30,17 @@ class Taxi(BaseModel):
     Per_Minute_Rate: float = Field(ge= 0,le=10)	
     Trip_Duration_Minutes: float = Field(ge= 0,le=180)	
 
+class TaxiRate(BaseModel): #Detta är "X"
+    Time_of_Day: Literal['Morning', 'Evening', 'Afternoon', 'Night'] 
+    Weather: Literal['Clear', 'Rain', 'Snow']
+    Day_of_Week: Literal['Weekday', 'Weekend'] 
+    Traffic_Conditions: Literal['Low', 'High', 'Medium']
+
+class TaxiRatePrediction(BaseModel): # Detta är "Y"
+    Base_Fare: float = Field(ge=0, lt=10)
+    Per_Km_Rate: float = Field(ge=0, lt=10)
+    Per_Minute_Rate: float = Field(ge=0, lt=10)
+
 class TaxiPrediction(BaseModel):
     predicted_price: float #TODO kanske field här? 
     
