@@ -26,15 +26,11 @@ def main():
     
     st.markdown("## Price prediction")
 
-    # Ha alla kolumner i selectboxes ? Nej
-    # [X] Ha objekt-kolumner som knappar, och så får man lägga in trip_distance_km samt trip_duration_minutes - till att börja med
-    # Sedan gör så du kan skriva plats A-B och klicka på knappar för object-kolumnerna. (st.pills)
-    # Sedan kan du bara välja plats A-B, välja resa nu/resa senare (st.toggle) och bara isf klicka på object-knappar
-    base_fare = 3
-    per_km_rate = 1
-    per_minute_rate = 1
+    # base_fare, per_km_rate, per_minute_rate = predict_rates()
     
-    passenger_count = st.pills("Choose number of passangers", [1,2,3,4], default=1)#df['Passenger_Count'].sort_values().unique(), default=1)    
+    
+    
+    passenger_count = st.pills("Choose number of passengers", [1,2,3,4], default=1)#df['Passenger_Count'].sort_values().unique(), default=1)    
     time_day = st.pills("Choose time of day", df['Time_of_Day'].unique(), default="Morning")    
     day_week = st.pills("Choose day of week", df['Day_of_Week'].unique(), default="Weekday")
     traffic = st.pills("Choose traffic condition", df['Traffic_Conditions'].unique(), default="Low")
@@ -42,21 +38,32 @@ def main():
     distance = st.select_slider("Choose trip distance in km", options=round(df["Trip_Distance_km"]).sort_values().unique())
     duration = st.select_slider("Choose trip duration in min", options=round(df["Trip_Duration_Minutes"]).sort_values().unique())
 
-    # Predicta! 
-    #[X] Ha fasta värden på alla fares till att börja med
-    # Sedan basera fares på vilka objekt du valt
+    # base_fare = df["Base_Fare"].median()
+    # per_km_rate = df["Per_Km_Rate"].median()
+    # per_minute_rate = df["Per_Minute_Rate"].median()
     
-    #[X] Få in endpoint för att anropa, men datan måste ju skickas in dit också? 
+    objects_for_fares = {
+            "Time_of_Day": time_day,
+            "Day_of_Week": day_week,
+            "Traffic_Conditions": traffic,
+            "Weather": weather,
+    }
+    rate_predict = post_api_endpoint(objects_for_fares, "taxi/rate_predict").json()
+    # st.write("Base Fare: ", rate_predict.get("Base_Fare"))
+    # st.write("Min rate: ", rate_predict.get("Per_Minute_Rate"))
+    # st.write("KM rate: ", rate_predict.get("Per_Km_Rate"))
+    
+    
     payload = {
     "Trip_Distance_km": distance,
     "Time_of_Day": time_day,
     "Day_of_Week": day_week,
     "Passenger_Count": passenger_count,
-    "Traffic_Conditions": traffic,
-    "Weather": weather,
-    "Base_Fare": base_fare,
-    "Per_Km_Rate": per_km_rate,
-    "Per_Minute_Rate": per_minute_rate,
+    "Traffic_Conditions": traffic, #Get med google API
+    "Weather": weather, #Get med weather API
+    "Base_Fare": rate_predict.get("Base_Fare"), #predictade rates gör mindre variation i priset när man predictar dem, för att de balanseras nu mot objektkolumnerna, om det är tex rain = mer/längre resor = lägre priser.
+    "Per_Km_Rate": rate_predict.get("Per_Km_Rate"),
+    "Per_Minute_Rate": rate_predict.get("Per_Minute_Rate"),
     "Trip_Duration_Minutes": duration,
     }
 
@@ -64,7 +71,7 @@ def main():
     predicted_price = round(data_predict.get("predicted_price") *9.41)
     # st.write("----------------------")
     st.divider()
-    st.markdown(f"### Estimated price for your requirements: {predicted_price} SEK")
+    st.markdown(f"### Estimated price for your trip: {predicted_price} SEK")
     
 
     
