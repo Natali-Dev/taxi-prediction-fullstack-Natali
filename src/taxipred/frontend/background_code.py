@@ -25,7 +25,7 @@ def add_background():
       position: absolute;
       top: 0;
       bottom: 0;
-      right: 25%;
+      right: 15%;
       left: 25%;
       background: rgba(0,0,0,0.9);  /* ändra alpha för mer/mindre dimma */
       
