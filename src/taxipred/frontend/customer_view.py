@@ -1,10 +1,5 @@
 import streamlit as st
-from taxipred.utils.helpers import read_api_endpoint
 from taxipred.utils.helpers import post_api_endpoint
-from taxipred.utils.constants import ASSET_PATH
-import pandas as pd
-from taxipred.frontend.kpi_charts import kpi
-from taxipred.frontend.background_code import add_background
 from dotenv import load_dotenv
 import os, requests, datetime, json
 time_now = datetime.datetime.now()

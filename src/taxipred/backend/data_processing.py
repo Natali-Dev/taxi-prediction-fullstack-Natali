@@ -1,7 +1,6 @@
 from taxipred.utils.constants import CLEANED_TAXI_CSV_PATH
 import pandas as pd
 import json
-from pprint import pp, pprint
 from pydantic import BaseModel, Field
 from typing import Literal
 

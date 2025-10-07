@@ -1,19 +1,9 @@
 from fastapi import FastAPI
-from taxipred.utils.constants import TAXI_MODEL_PATH,CLEANED_TAXI_CSV_PATH, dictionary_for_encoding, RATE_TAXI_MODEL_PATH
+from taxipred.utils.constants import TAXI_MODEL_PATH, dictionary_for_encoding, RATE_TAXI_MODEL_PATH
 from taxipred.backend.data_processing import TaxiData, Taxi, TaxiPrediction, TaxiRatePrediction, TaxiRate
-from pprint import pp
 import pandas as pd
 import joblib
-from contextlib import asynccontextmanager
 
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    app.state.df = pd.read_csv(CLEANED_TAXI_CSV_PATH) #startup
-    app.state.model = joblib.load(TAXI_MODEL_PATH)
-    yield #app running
-    del app.state.df #on shutdown
-    del app.state.model
 
 app = FastAPI()
 

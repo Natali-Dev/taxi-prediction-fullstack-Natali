@@ -1,7 +1,3 @@
-import streamlit as st
-from taxipred.utils.helpers import read_api_endpoint
-import pandas as pd
-
 
 def kpi(df):
     """-> labels, values"""
