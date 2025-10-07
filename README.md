@@ -20,7 +20,27 @@ Fares:
 - Per_Km_Rate: The rate charged per kilometer of the trip.
 - Per_Minute_Rate: The rate charged per minute of the trip duration.
 
+# Explaining the structure
 
-### Ideas: 
-- check if bad weather == more bookings/higher fare (rain = more trips)
+###  setup.py 
+- For packaging the module: enables importing files freely from different places. If installed it will also insall librarys that are specified. Use pip to install.
+## /explorations
+- **final_cleaning.ipynb** - where the final cleaning took place (no testing, only logic). 
+- The other Jupyter notebooks are only explorations and files for testing.
 
+##  /backend
+- **api.py** - contains FastAPI and different endpoints. An interface.
+- **data_processing.py** - class TaxiData for reading the dataframe and method for converting dataframe to json-format. Pydantic classes for validating data.  
+- **predict_fares.py** - model training and exporting for predicting base rate and fares. Uses the object columns as features. 
+- **predict_trip_price.py** - model training and exporting for predicting trip price, uses all other columns as features. 
+
+##  /frontend
+- **background_code.py** - chatgpt generated CSS code for making a dark box over the page, so the background only is 100% visible in the margins. 
+- **company_view.py** - logic for the company page. Here you can select different values for all the feature columns (except rate and fares) to get a prediction for the trip price. 
+- **customer_view.py** - logic for the customer page. Uses OpenWeather API for getting current weather and getting the city by sending in longitude and latitude from Google API. Google API, the user select from/to addresses and total distance and duration between them are taken from the dictionary that the response contains, alos longitude and latitude.
+- **dashboard.py** - methods from company and customer view are called here, and has code wich applies to both views.
+- **kpi_charts.py** - has 3 kpis, an empty chart function for later development.
+
+##  /utils
+- **constants.py** - has filepaths and a dictionary which is used in api.py, for encoding. The model is trained on encoded data, so it requiers all columns to be the same when predicting. 
+- **helpers.py** - functions for sending read and post requests to the backend, called in frontend.py. Theese functions connects the backend localhost url to the frontend. 
