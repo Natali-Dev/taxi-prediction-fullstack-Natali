@@ -32,11 +32,14 @@ def get_weather(latitude, longitude):
     response = requests.get(url)
     output = json.loads(response.text)
     weather = output["weather"][0]["main"]
-    if weather == "Clouds":
-        weather = "Clear"
+    if weather == "Clear" or weather == "Rain" or weather == "Snow":
+        return output["weather"][0]["main"], output["main"]["feels_like"], output["name"]
+    elif weather == "Drizzle" or weather == "Clouds": 
+        weather = "Rain"
         return weather, output["main"]["feels_like"], output["name"]
     else:
-        return output["weather"][0]["main"], output["main"]["feels_like"], output["name"]
+        weather = "Clear"
+        return weather, output["main"]["feels_like"], output["name"]
     
 def get_traffic(data): 
     duration, duration_in_traffic = data["routes"][0]["legs"][0]["duration"], data["routes"][0]["legs"][0]["duration_in_traffic"]
